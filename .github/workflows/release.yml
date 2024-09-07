@@ -11,11 +11,39 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - name: build-mac-os
-        run: swift build
-      - name: Run tests
-        run: swift test
-  
+        with: 
+          submodules:  true
+      - run: brew install boost
+      - run: brew install cmake
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
+      - run: cmake --build .
+      - run: cmake --build . --target test
+      - run: cmake --build . --target package
+      - name: create release for mac os
+        id: create_release_mac_os
+        uses: actions/create-release@v1
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset mac os
+        id: upload-release-asset-mac-os
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_content_type: application/zip
+        
+          
+
+      
   build-ubuntu:
     runs-on: ubuntu-latest
     permissions: write-all
