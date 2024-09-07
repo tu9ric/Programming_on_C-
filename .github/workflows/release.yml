@@ -26,7 +26,6 @@ jobs:
         uses: actions/create-release@v1
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
         with:
           tag_name: ${{ github.run_number }}
           release_name: Release ${{ github.run_number }}
@@ -43,11 +42,9 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
           asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
-          asset_content_type: application/vnd.
-        
-          
+          asset_content_type: application/zip.
 
-      
+
   build-ubuntu:
     runs-on: ubuntu-latest
     permissions: write-all
