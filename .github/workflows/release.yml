@@ -7,7 +7,16 @@ on:
       - feature/github_actions
 
 jobs:
-  build:
+  build-mac-os:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build-mac-os
+        run: swift build
+      - name: Run tests
+        run: swift test
+  
+  build-ubuntu:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
@@ -39,3 +48,8 @@ jobs:
           asset_path: ./helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
+
+
+  
+
+
