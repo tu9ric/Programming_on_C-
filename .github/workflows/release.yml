@@ -39,7 +39,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
           asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
-          asset_content_type: application/zip
+          asset_content_type: application/vnd.
         
           
 
