@@ -59,7 +59,7 @@ install(TARGETS helloworld_cli RUNTIME DESTINATION bin)
 
 if (${CMAKE_SYSTEM} MATCHES "Linux")
     set(CPACK_GENERATOR DEB)
-else:
+else
     set(CPACK_GENERATOR ZIP)
 endif()
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
