@@ -5,6 +5,5 @@
 int main (int, char **) {
     std::cout << "Hello, world! Version: 1.0." << version() << std::endl;
     std::cout << "Second string" << std::endl;
-    std::cout << "third string" << std::endl;
-    return 0;
+    return 
 }
