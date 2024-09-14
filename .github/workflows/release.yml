@@ -3,56 +3,18 @@ name: 'C++ CI'
 on:
   push:
     branches:
-      - main
+      - lab1
       - feature/github_actions
 
 jobs:
-  build-mac-os:
-    runs-on: macos-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v3
-        with: 
-          submodules:  true
-      - run: brew install boost
-      - run: brew install cmake
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
-      - run: cmake --build .
-      - run: cmake --build . --target test
-      - run: cmake --build . --target package
-      - name: create release for mac os
-        id: create_release_mac_os
-        uses: actions/create-release@v1
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
-          
-          
-      - name: Upload Release Asset mac os
-        id: upload-release-asset-mac-os
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
-          asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
-          asset_content_type: application/zip.
-
-
-  build-ubuntu:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: macos-14
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
+      - run: brew install boost
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }}
       - run: cmake --build .
       - run: cmake --build . --target test
@@ -67,20 +29,13 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-          
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./helloworld-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: helloworld-0.0.${{ github.run_number }}-Linux.deb
-          asset_content_type: application/vnd.debian.binary-package
-
-
-  
-
-
+          asset_path: ./helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_name: helloworld-0.0.${{ github.run_number }}-Darwin.zip
+          asset_content_type: application/zip
